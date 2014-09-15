@@ -18,16 +18,16 @@ endif
             "\ 'ctrlp.vim',
             "\ 'nerdtree',
             "\ 'vim-powerline',
-            "\ 'ultisnips',
             "\ 'syntastic',
             "\ 'supertab',
-            "\ 'jedi-vim',
             "\ 'vim-coffee-script',
             "\ 'handlebars',
             "\ 'vim-less',
 
 "disabled  plugins
 let g:pathogen_disabled =[
+            \ 'ultisnips',
+            \ 'jedi-vim',
             \ 'vim-fugitive',
             \ 'tagbar',
             \ 'coffeetags',
