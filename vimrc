@@ -1,6 +1,4 @@
-" Tobin's vimrc file 
-"
-" Special Note: To profile see: http://stackoverflow.com/a/12216578/670654
+" Lennart's vimrc file 
 "
 " :profile start profile.log
 " :profile func *
