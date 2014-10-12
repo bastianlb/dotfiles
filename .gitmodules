@@ -106,3 +106,6 @@
 [submodule "vim/bundle/jedi-vim"]
 	path = vim/bundle/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
+[submodule "vim/lint.vim"]
+	path = vim/lint.vim
+	url = https://github.com/joestelmach/lint.vim.git
