@@ -1,6 +1,6 @@
 [user]
-	name = Tobin Van Pelt
-	email = tobin@h2ometrics.com
+	name = bastianl
+	email = bastian.lennart@gmail.com
 
 [color]
 	diff = auto
@@ -17,3 +17,5 @@
 
 [push]
 	default = upstream
+[credential]
+	helper = osxkeychain

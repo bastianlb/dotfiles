@@ -13,7 +13,7 @@ export EDITOR=vim
 export VISUAL=vim
 
 # set nosetests
-export NOSE_REDNOSE=1
+#export NOSE_REDNOSE=1
 
 # added for xcode compiling - THVP
 export ARCHFLAGS="-arch i386 -arch x86_64"
@@ -23,6 +23,8 @@ export NODE_PATH=/usr/local/lib/node/:$NODE_PATH
 
 # virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/www/
+source /usr/local/bin/virtualenvwrapper.sh
 
 # use mvim when possible - faster
 alias vim='mvim -v'

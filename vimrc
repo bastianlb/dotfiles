@@ -8,7 +8,7 @@
 " :noautocmd qall!
 
 if !has('unix')
-    let $HOME="C:/home/tobin"
+    let $HOME="C:/home/"
 endif
 
 
@@ -21,11 +21,13 @@ endif
             "\ 'vim-coffee-script',
             "\ 'handlebars',
             "\ 'vim-less',
-
+            "\ 'jedi-vim',
+            "\ 'vim-javascript',
+            "\ 'vim-javascript-syntax',
+            
 "disabled  plugins
 let g:pathogen_disabled =[
             \ 'ultisnips',
-            \ 'jedi-vim',
             \ 'vim-fugitive',
             \ 'tagbar',
             \ 'coffeetags',
@@ -37,8 +39,6 @@ let g:pathogen_disabled =[
             \ 'vim-autoclose',
             \ 'vim-easytags',
             \ 'vim-indent-guides',
-            \ 'vim-javascript',
-            \ 'vim-javascript-syntax',
             \ 'vim-markdown',
             \ 'vim-misc',
             \ 'vim-repeat',
@@ -433,26 +433,13 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 
 
 
-
-
-
-
-
-
-
-
-
 " enter with indent (used with demilitMate)
 imap <C-c> <CR><Esc>O
-
-
 
 " pydoc.vim
 let g:pydoc_cmd = 'python -m pydoc'
 let g:pydoc_open_cmd = 'vsplit'
 let g:pydoc_highlight = 0 
-
-
 
 " TODO: move this to its own file
 " XML formatter
