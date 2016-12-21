@@ -1,35 +1,31 @@
-# universal profile file for setting env variables
+#! /bin/bash
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
-# set PATH
-PATH=/usr/local/bin:$PATH
-#PATH=/usr/local/share/python:$PATH
-PATH=/usr/local/share/npm/bin:$PATH
-PATH=/usr/local/opt/ruby/bin:$PATH
-PATH=$HOME/.dot/bin:$PATH
-export PATH
+export PATH="$PATH:$HOME/.dot/bin"
 
-# set editors
-export EDITOR=vim
-export VISUAL=vim
+# yarn
+export PATH="$PATH:`yarn global bin`"
+export PATH="$PATH:/Users/lennartbastian/.config/yarn/global/node_modules/ember-cli/bin"
+export PATH="$PATH:/Users/lennartbastian/.config/yarn/global/node_modules/bower/bin"
 
-# set nosetests
-#export NOSE_REDNOSE=1
+# brew
+export PATH="/usr/local/bin:$PATH"
 
-# added for xcode compiling - THVP
-export ARCHFLAGS="-arch i386 -arch x86_64"
+export VISUAL="nvim"
+export EDITOR="$VISUAL"
+export PROMPT="%~ $ "
 
-# used for jsctags
-export NODE_PATH=/usr/local/lib/node/:$NODE_PATH
+alias gp='git pull'
+alias gc='git commit'
+alias gb='git branch'
+alias gba='git branch -a' alias glg='git log --stat --max-count=10'
+alias glgg='git log --graph --max-count=10'
+alias glgga='git log --graph --decorate --all'
+alias glo='git log --oneline --decorate --color'
+alias glog='git log --oneline --decorate --color --graph'
+alias gss='git status -s'
+alias ga='git add'
+alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
 
-# virtualenv wrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/www/
-source /usr/local/bin/virtualenvwrapper.sh
-
-# use mvim when possible - faster
-alias vim='mvim -v'
-
-# too many open files for OSX
-ulimit -S -n 2048
-
-source ~/.bash_profile
+alias h2o='cd ~/h2obuild/h2oclient'
+alias vi=nvim

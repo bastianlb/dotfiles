@@ -1,18 +1,30 @@
 #!/bin/bash
 
+brew install zsh tmux
+if [ -z "$ZSH_VERSION" ]; then
+  chsh -s $(which zsh);
+fi
+brew install neovim/neovim/neovim
+
+curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+
 ln -s ~/.dot/profile.osx ~/.profile
 ln -s ~/.dot/zprofile ~/.zprofile
 ln -s ~/.dot/zshrc ~/.zshrc
-ln -s ~/.dot/oh-my-zsh/ ~/.oh-my-zsh
 
-ln -s ~/.dot/vim/ ~/.vim
-ln -s ~/.dot/vimrc ~/.vimrc
-ln -s ~/.dot/gvimrc ~/.gvimrc
+# configure nvim 
+ln -s .dot/nvimrc .nvimrc
+mkdir -p ~/.config/nvim
+ln -s ~/.dot/nvimrc ~/.config/nvim/init.vim
 
 ln -s ~/.dot/tmux.osx ~/.tmux.conf
 
 ln -s ~/.dot/gitconfig ~/.gitconfig
 ln -s ~/.dot/gitignore ~/.gitignore
 
-ln -s ~/.dot/noserc ~/.noserc
+pip install ipython
 ln -s ~/.dot/ipython_config.py ~/.ipython/profile_default/ipython_config.py
+
+# install vim-plug
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

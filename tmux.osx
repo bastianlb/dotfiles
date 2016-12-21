@@ -4,8 +4,14 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # window splits
-bind | split-window -h
-bind - split-window -v
+bind | split-window -h -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
+
+# only
+bind o kill-pane -a
+
+# repeat timing
+set -g repeat-time 200
 
 # pane movement
 bind h select-pane -L
@@ -52,7 +58,6 @@ set -g message-attr bright
 # status lines
 set -g status-left-length 60
 set -g status-left "#h #[fg=green][#S] #[fg=yellow]#W:#T"
-set -g status-utf8 on
 
 
 # 15% | 28 Nov 18:15
@@ -60,15 +65,10 @@ set -g status-right "#(battery) | #[fg=cyan]%d %b %R"
 
 
 # other settings
-set -sg escape-time 1
+set -sg escape-time 0
 
 set -g base-index 1
 setw -g pane-base-index 1
-
-setw -g mode-mouse on
-set -g mouse-select-pane on
-set -g mouse-resize-pane on
-set -g mouse-select-window on
 
 setw -g monitor-activity on
 set -g visual-activity on
@@ -77,21 +77,14 @@ set -g status-justify centre
 setw -g mode-keys vi
 set -g status-interval 10
 
+# Setup 'v' to begin selection as in Vim
+bind-key -t vi-copy v begin-selection
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 
-# tmux-utils zoom functionality
-# Need to have tmux-utils library on $PATH for these bindings
-unbind Up
-bind Up run-shell tmux-zoom
+# Update default binding of `Enter` to also use copy-pipe
+unbind -t vi-copy Enter
+bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
 
-unbind Down
-bind Down run-shell tmux-unzoom
+# Bind ']' to use pbpaste
+bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"
 
-# Copy mode
-bind -t vi-copy v begin-selection
-bind -t vi-copy y copy-selection
-bind -t vi-copy Escape cancel
-
-# OSX keyboard
-set-option -g default-command "reattach-to-user-namespace -l zsh"
-bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
-bind C-v run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"

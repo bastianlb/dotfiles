@@ -1,3 +1,4 @@
+#! /bin/bash
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -34,6 +35,10 @@ plugins=(brew git pip python vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_colors%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%} ✗"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%} ✓"
 
 # -----------------------------------------------------------------------------
 # THVP
@@ -47,11 +52,8 @@ PROMPT='%{$fg[blue]%}%m:%{$fg[cyan]%}%~ %{$fg[red]%}%n➜ %{$reset_color%}'
 RPROMPT='$(vi_mode_prompt_info) %{$fg[green]%}$(virtualenv_info) $(git_prompt_info)%{$reset_color%}%'
 VIRTUAL_ENV_DISABLE_PROMPT=1
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_colors%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%} ✗"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%} ✓"
-
+# active completions
+fpath=(/usr/local/share/zsh-completions $fpath)
 
 ## set this back to the original so that zsh uses the base python to run
 ## virtualenv.  This is originally set in .zprofile
