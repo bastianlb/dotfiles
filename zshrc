@@ -47,10 +47,11 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%} ✓"
 function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '['`basename $VIRTUAL_ENV`']'
 }
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 PROMPT='%{$fg[blue]%}%m:%{$fg[cyan]%}%~ %{$fg[red]%}%n➜ %{$reset_color%}'
 RPROMPT='$(vi_mode_prompt_info) %{$fg[green]%}$(virtualenv_info) $(git_prompt_info)%{$reset_color%}%'
-VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # active completions
 fpath=(/usr/local/share/zsh-completions $fpath)
@@ -70,3 +71,10 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 #if [ -n "$VIRTUAL_ENV" ]; then
 #    workon $(basename $VIRTUAL_ENV)
 #fi
+#
+# pyenv config
+export PYENV_ROOT=/usr/local/var/pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

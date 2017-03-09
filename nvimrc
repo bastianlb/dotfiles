@@ -1,26 +1,34 @@
 call plug#begin('~/.vim/plugged')
 
-" Our lord and savior
+" git helpers such as :Gdiff
 Plug 'tpope/vim-fugitive'
+" github integration
 Plug 'tpope/vim-rhubarb'
+" easily modify surrounding quotes
 Plug 'tpope/vim-surround'
+" comment out things easily
 Plug 'tpope/vim-commentary'
+" explore directory listings
 Plug 'tpope/vim-vinegar'
+" adjusts tabs and spaces
 Plug 'tpope/vim-sleuth'
+" common pairs of commands
 Plug 'tpope/vim-unimpaired'
+" repeat sets of commands
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-markdown'
 
+Plug 'kien/ctrlp.vim'
+Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
+Plug 'neovim/node-host', { 'do': 'npm install' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'othree/html5.vim'
 Plug 'groenewege/vim-less', { 'for': 'less' }
-Plug 'kien/ctrlp.vim'
 Plug 'Jelera/vim-javascript-syntax'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'ap/vim-css-color'
 Plug 'neomake/neomake'
-Plug 'rking/ag.vim'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'editorconfig/editorconfig-vim'
@@ -28,9 +36,15 @@ Plug 'reedes/vim-pencil'
 Plug 'chriskempson/base16-vim'
 Plug 'altercation/vim-colors-solarized'
 
+Plug 'nvie/vim-flake8'
+Plug 'mattboehm/vim-accordion'
+Plug 'freeo/vim-kalisi'
+
 call plug#end()
 
 let mapleader="\<SPACE>"
+
+noremap <leader>o :Gbrowse<cr>
 
 set nowrap
 set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
@@ -64,6 +78,8 @@ set nostartofline       " Do not jump to first character with page commands.
 
 " ctrlp options
 let g:ctrlp_working_path_mode = 0
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
 set wildignore+=*/build/**
 set wildignore+=*/tmp/**
 set wildignore+=*/dist/**
@@ -107,8 +123,6 @@ nnoremap <Leader>w :w<CR>
 
 " Use ; for commands.
 nnoremap ; :
-" Use Q to execute default register.
-nnoremap Q @q
 
 " window
 nmap <leader>h :topleft  vnew<CR>
@@ -126,6 +140,25 @@ omap s :normal vs<CR>
 
 """ PLUGIN SETTINGS
 
+colorscheme kalisi
+set background=dark
+let g:airline_theme='kalisi'
+set t_Co=256
+
+" flake8
+autocmd BufWritePost *.py call Flake8()
+" window height
+let g:flake8_quickfix_height=7
+
+
+" Accordion use 2 panes
+autocmd VimEnter * AccordionAll 2
+
+" YouCompleteMe options
+" ctrl+] when the cursor is positioned in a symbol to quickly jump to a definition
+" or declaration
+" au FileType js,py nnoremap <buffer> <c-]> :YcmCompleter GoTo<CR>
+
 " vim-airline options
 let g:airline_left_sep=''
 let g:airline_right_sep=''
@@ -135,19 +168,19 @@ autocmd Filetype javascript setlocal ts=2
 let g:javascript_ignore_javaScriptdoc = 1
 
 " Syntastic options
-let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_checkers = ['eslint']
 
 " Neomake options
 autocmd! BufWritePost,BufEnter * Neomake
 let g:neomake_verbose = 0
-let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_tex_enabled_makers = []
-let g:neomake_markdown_enabled_makers = []
 
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
+  let g:ackprg = 'ag --vimgrep'
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'

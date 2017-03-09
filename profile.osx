@@ -1,15 +1,17 @@
-#! /bin/bash
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 export PATH="$PATH:$HOME/.dot/bin"
+
+# brew
+export PATH="/usr/local/bin:$PATH"
 
 # yarn
 export PATH="$PATH:`yarn global bin`"
 export PATH="$PATH:/Users/lennartbastian/.config/yarn/global/node_modules/ember-cli/bin"
 export PATH="$PATH:/Users/lennartbastian/.config/yarn/global/node_modules/bower/bin"
+export PATH="$PATH:/Users/lennartbastian/.config/yarn/global/node_modules/eslint/bin"
 
-# brew
-export PATH="/usr/local/bin:$PATH"
+#! /bin/bash
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
@@ -29,3 +31,5 @@ alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
 
 alias h2o='cd ~/h2obuild/h2oclient'
 alias vi=nvim
+
+alias reseed='rake db:drop db:create db:migrate db:seed'
