@@ -36,30 +36,11 @@ set -g default-terminal "screen-256color"
 set -g status-fg white
 set -g status-bg colour235
 
-setw -g window-status-fg blue
-setw -g window-status-bg default
 setw -g window-status-format '#I:#W'
-
-setw -g window-status-current-fg red
-setw -g window-status-current-bg default
-setw -g window-status-current-attr bright
-
-setw -g window-status-activity-attr none
-
-set -g pane-border-fg white
-set -g pane-border-bg default
-set -g pane-active-border-fg yellow
-set -g pane-active-border-bg default
-
-set -g message-fg white
-set -g message-bg black
-set -g message-attr bright
-
 
 # status lines
 set -g status-left-length 60
 set -g status-left "#h #[fg=green][#S] #[fg=yellow]#W:#T"
-set -g status-utf8 on
 
 
 # 15% | 28 Nov 18:15
@@ -71,11 +52,6 @@ set -sg escape-time 1
 
 set -g base-index 1
 setw -g pane-base-index 1
-
-setw -g mode-mouse on
-set -g mouse-select-pane on
-set -g mouse-resize-pane on
-set -g mouse-select-window on
 
 setw -g monitor-activity on
 set -g visual-activity on
