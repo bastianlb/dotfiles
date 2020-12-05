@@ -83,18 +83,3 @@ set -g visual-activity on
 set -g status-justify centre
 setw -g mode-keys vi
 set -g status-interval 10
-
-
-# tmux-utils zoom functionality
-# Need to have tmux-utils library on $PATH for these bindings
-unbind Up
-bind Up run-shell tmux-zoom
-
-unbind Down
-bind Down run-shell tmux-unzoom
-
-# Copy mode
-bind -t vi-copy v begin-selection
-bind -t vi-copy y copy-selection
-bind -t vi-copy Escape cancel
-
