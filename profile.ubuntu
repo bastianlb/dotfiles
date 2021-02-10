@@ -27,7 +27,12 @@ fi
 
 # set PATH
 PATH=$HOME/.dot/bin:$PATH
+PATH=$HOME/packages/vcpkg:$PATH
+
 export PATH
+
+# export VCPKG root
+export VCPKG_ROOT="$HOME/packages/vcpkg"
 
 # set editors
 export EDITOR=vim
@@ -49,3 +54,4 @@ if command -v pyenv 1 > /dev/null 2>&1; then
 fi
 
 alias vi=nvim
+alias open=xdg-open

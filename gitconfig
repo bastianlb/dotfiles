@@ -17,8 +17,6 @@
 
 [push]
 	default = current
-[credential]
-	helper = osxkeychain
 [branch]
 	autosetupmerge = true
 	autosetuprebase = always

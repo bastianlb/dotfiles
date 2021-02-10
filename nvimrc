@@ -17,6 +17,9 @@ Plug 'tpope/vim-unimpaired'
 " repeat sets of commands
 Plug 'tpope/vim-repeat'
 
+" file directory explore
+Plug 'preservim/nerdtree'
+
 Plug 'kien/ctrlp.vim'
 Plug 'rking/ag.vim'
 Plug 'mileszs/ack.vim'
@@ -47,7 +50,7 @@ let mapleader="\<SPACE>"
 noremap <leader>o :Gbrowse<cr>
 
 set nowrap
-set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
+set softtabstop=0 expandtab shiftwidth=2 smarttab
 set showcmd             " Show (partial) command in status line.
 set showmatch           " Show matching brackets.
 set showmode            " Show current mode.
@@ -56,7 +59,6 @@ set formatoptions+=o    " Continue comment marker in new lines.
 set textwidth=0         " Hard-wrap long lines as you type them.
 set expandtab           " Insert spaces when TAB is pressed.
 set tabstop=2           " Render TABs using this many spaces.
-set shiftwidth=2        " Indentation amount for < and > commands.
 
 set noerrorbells        " No beeps.
 set modeline            " Enable modeline.
@@ -129,6 +131,8 @@ nmap <leader>l :botright vnew<CR>
 nmap <leader>k :topleft  new<CR>
 nmap <leader>j :botright new<CR>
 
+"nerdtree
+map \ :NERDTreeToggle<CR>
 
 " search things usual way using /something
 " hit cs, replace first match, and hit <Esc>
