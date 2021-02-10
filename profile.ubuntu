@@ -28,7 +28,6 @@ fi
 # set PATH
 PATH=$HOME/.dot/bin:$PATH
 PATH=$HOME/packages/vcpkg:$PATH
-
 export PATH
 
 # export VCPKG root
