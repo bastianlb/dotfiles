@@ -88,8 +88,11 @@ set wildignore+=*/bower_components/**
 set wildignore+=*/node_modules/**
 set wildignore+=*/docs/**
 set wildignore+=*/staticfiles/**
+set wildignore+=*/data/**
+set wildignore+=*/output/**
 set wildignore+=*.pyc
 set wildignore+=*/__pycache__/*
+set wildignore+=*.json
 
 " .swp and backup file locations
 set directory=~/.vim-tmp
