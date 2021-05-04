@@ -73,3 +73,4 @@ plugins=(git pyenv)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.profile
+source ~/.zprofile

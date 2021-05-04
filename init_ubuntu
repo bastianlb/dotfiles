@@ -1,6 +1,5 @@
 rm ~/.profile
 ln -s ~/.dot/profile.ubuntu ~/.profile
-ln -s ~/.dot/zprofile ~/.zprofile
 ln -s ~/.dot/vim/ ~/.vim
 ln -s ~/.dot/vimrc ~/.vimrc
 ln -s ~/.dot/gvimrc ~/.gvimrc
@@ -43,7 +42,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ln -s ~/.dot/zshrc ~/.zshrc
 
 git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 
 # install g++8 for C++17
 sudo apt-get install g++-8
