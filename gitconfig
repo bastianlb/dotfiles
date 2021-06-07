@@ -9,7 +9,7 @@
 	ui = true
 
 [core]
-	excludesfile = ~/.dot/.gitexclude
+	excludesFile = /home/lennart/.gitignore
 	editor = nvim
 
 [alias]

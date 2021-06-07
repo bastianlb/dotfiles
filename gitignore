@@ -1,2 +1,4 @@
 .DS_Store
 *.pyc
+.ccls-cache/*
+compile_commands.json
