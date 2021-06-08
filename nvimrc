@@ -1,3 +1,6 @@
+let g:tmux_navigator_no_mappings = 1
+let g:tmux_navigator_save_on_switch = 1
+
 " auto-install vim-plug
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -35,16 +38,16 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 
 " temp keep ctrlp, telescope broken on nightly vim build
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+
+" fuzzy search plugins
+Plug 'mileszs/ack.vim'
+
 " dependencies
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 " telescope
 Plug 'nvim-telescope/telescope.nvim'
-
-" fuzzy search plugins
-Plug 'rking/ag.vim'
-Plug 'mileszs/ack.vim'
 
 " split panes
 Plug 'mattboehm/vim-accordion'
@@ -70,7 +73,6 @@ Plug 'folke/tokyonight.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 call plug#end()
-
 
 " Markdown Preview
 let g:mkdp_auto_start = 0
@@ -318,10 +320,6 @@ set background=dark
 let g:airline_theme='kalisi'
 set t_Co=256
 
-" window height
-let g:flake8_quickfix_height=7
-
-
 " Accordion use 2 panes
 autocmd VimEnter * AccordionAll 2
 
@@ -342,47 +340,20 @@ let g:airline_section_error=''
 autocmd Filetype javascript setlocal ts=2
 let g:javascript_ignore_javaScriptdoc = 1
 
-" Syntastic options
-" let g:syntastic_javascript_checkers = ['eslint']
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_files=0
 let g:ctrlp_max_depth=40
 
-" The Silver Searcher
+set wildignore+=*/.git/*,*/tmp/*,*.swp,*/data/*,*/.tiff,/*.jpeg,
+
+" use ripgrep for search
 if executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-  let g:ackprg = 'ag --vimgrep'
+  set grepprg=rg\ --color=never
+  let g:ackprg = 'rg --vimgrep'
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+else
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 endif
-
-
-" use matcher for searching if available
-if executable('matcher')
-    let g:ctrlp_match_func = { 'match': 'GoodMatch' }
-
-    function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
-
-      " Create a cache file if not yet exists
-      let cachefile = ctrlp#utils#cachedir().'/matcher.cache'
-      if !( filereadable(cachefile) && a:items == readfile(cachefile) )
-        call writefile(a:items, cachefile)
-      endif
-      if !filereadable(cachefile)
-        return []
-      endif
-
-      " a:mmode is currently ignored. In the future, we should probably do
-      " something about that. the matcher behaves like "full-line".
-      let cmd = 'matcher --limit '.a:limit.' --manifest '.cachefile.' '
-      if !( exists('g:ctrlp_dotfiles') && g:ctrlp_dotfiles )
-        let cmd = cmd.'--no-dotfiles '
-      endif
-      let cmd = cmd.a:str
-
-      return split(system(cmd), "\n")
-
-    endfunction
-end
