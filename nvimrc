@@ -29,7 +29,7 @@ Plug 'tpope/vim-repeat'
 " file directory explore
 Plug 'preservim/nerdtree'
 " completion engine
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " LSP-server integration
 Plug 'neovim/nvim-lspconfig'
@@ -61,6 +61,9 @@ Plug 'editorconfig/editorconfig-vim'
 
 " writing modes? check and use
 Plug 'reedes/vim-pencil'
+
+"
+Plug 'davidhalter/jedi-vim'
 
 " python linting via flake8
 Plug 'nvie/vim-flake8'
@@ -102,20 +105,42 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 end
+
 lspconfig.ccls.setup {
-  cmd = { "ccls" };
+  cmd = { "ccls" },
   init_options = {
-    compilationDatabaseDirectory = {"./", "build/"};
-    index = {
-      threads = 0;
-    };
+    compilationDatabaseDirectory = "build",
     clang = {
-      excludeArgs = { "-frounding-math"} ;
-    };
+      excludeArgs = { "-frounding-math"},
+    },
   },
   on_attach = on_attach
-}
+};
+lspconfig.pylsp.setup {
+  on_attach = on_attach,
+  settings={
+        pylsp = {
+            configurationSources = { "flake8" },
+            plugins = { 
+              -- gives doc linting errors
+              -- pydocstyle = {enabled = true},
+              flake8 = {
+                config = "~/.config/flake8",
+                enabled=true,
+              },
+            },
+            type = "string"
+        }
+  }
+};
 EOF
+
+
+"set completeopt-=preview
+set completeopt=menuone,noinsert,noselect,longest
+
+" use omni completion provided by lsp
+autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 lua << EOF
 
@@ -344,9 +369,10 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_files=0
 let g:ctrlp_max_depth=40
 
-set wildignore+=*/.git/*,*/tmp/*,*.swp,*/data/*,*/.tiff,/*.jpeg,
-
 " use ripgrep for search
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+
+" The Silver Searcher
 if executable('ag')
   " Use ag over grep
   set grepprg=rg\ --color=never
