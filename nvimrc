@@ -72,6 +72,7 @@ Plug 'nvie/vim-flake8'
 Plug 'freeo/vim-kalisi'
 Plug 'altercation/vim-colors-solarized'
 Plug 'folke/tokyonight.nvim'
+Plug 'EdenEast/nightfox.nvim'
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
@@ -221,7 +222,7 @@ require('telescope').setup{
   defaults = {
     previewer = true,
     vimgrep_arguments = {
-      'ag %s --vimgrep -l --nocolor -g',
+      'rg %s --files --color=never --glob ""'
     },
     color_devicons = true,
     sorting_strategy = 'ascending',
@@ -340,7 +341,7 @@ omap s :normal vs<CR>
 let g:tokyonight_style = 'dark'
 let g:tokyonight_italic_functions = 1
 syntax enable
-colorscheme tokyonight
+colorscheme nightfox
 set background=dark
 let g:airline_theme='kalisi'
 set t_Co=256
@@ -369,11 +370,11 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_files=0
 let g:ctrlp_max_depth=40
 
-" use ripgrep for search
+" telescope options.. not always working
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 
 " The Silver Searcher
-if executable('ag')
+if executable('rg')
   " Use ag over grep
   set grepprg=rg\ --color=never
   let g:ackprg = 'rg --vimgrep'
