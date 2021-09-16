@@ -33,9 +33,17 @@ Plug 'preservim/nerdtree'
 
 " LSP-server integration
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
+
+" Install nvim-cmp
+Plug 'hrsh7th/nvim-cmp'
+" Install snippet engine (This example installs [hrsh7th/vim-vsnip](https://github.com/hrsh7th/vim-vsnip))
+Plug 'hrsh7th/vim-vsnip'
+" Install the buffer completion source
+Plug 'hrsh7th/cmp-buffer'
+" Install plugin for lsp
+Plug 'hrsh7th/cmp-nvim-lsp'
 
 " temp keep ctrlp, telescope broken on nightly vim build
 Plug 'ctrlpvim/ctrlp.vim'
@@ -62,11 +70,8 @@ Plug 'editorconfig/editorconfig-vim'
 " writing modes? check and use
 Plug 'reedes/vim-pencil'
 
-"
-Plug 'davidhalter/jedi-vim'
-
-" python linting via flake8
-Plug 'nvie/vim-flake8'
+" jupyter-like code execution
+Plug 'dccsillag/magma-nvim', { 'do': ':UpdateRemotePlugins' }
 
 " themes
 Plug 'freeo/vim-kalisi'
@@ -106,6 +111,34 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 end
 
+local cmp = require'cmp'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+  ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+  ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  ['<C-Space>'] = cmp.mapping.complete(),
+  ['<C-e>'] = cmp.mapping.close(),
+  ['<C-y>'] = cmp.mapping.confirm({
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = true,
+  })
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'path' },
+  }
+})
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 lspconfig.ccls.setup {
   cmd = { "ccls" },
   init_options = {
@@ -114,16 +147,21 @@ lspconfig.ccls.setup {
       excludeArgs = { "-frounding-math"},
     },
   },
-  on_attach = on_attach
+  on_attach = on_attach,
+  capabilities = capabilities,
 };
+
 lspconfig.pylsp.setup {
   on_attach = on_attach,
   settings={
         pylsp = {
-            configurationSources = { "flake8" },
+            configurationSources = { "flake8", "jedi", "rope" },
             plugins = { 
               -- gives doc linting errors
               -- pydocstyle = {enabled = true},
+              jedi = {
+                enabled=true,
+              },
               flake8 = {
                 config = "~/.config/flake8",
                 enabled=true,
@@ -131,78 +169,9 @@ lspconfig.pylsp.setup {
             },
             type = "string"
         }
-  }
+  },
+  capabilities = capabilities,
 };
-EOF
-
-
-"set completeopt-=preview
-set completeopt=menuone,noinsert,noselect,longest
-
-" use omni completion provided by lsp
-autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-lua << EOF
-
--- Compe setup
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
-
-  source = {
-    path = true;
-    nvim_lsp = true;
-  };
-}
-
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
-  end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  else
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-
 EOF
 
 lua <<EOF
@@ -369,10 +338,20 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_files=0
 let g:ctrlp_max_depth=40
 
-" use ripgrep for search
+" telescope mappings
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 
-" The Silver Searcher
+" Magma keybindings
+nnoremap <expr> <leader>r nvim_exec('MagmaEvaluateOperator', v:true)
+nnoremap <silent>       <leader>rr :MagmaEvaluateLine<CR>
+xnoremap <silent>       <leader>r  :<C-u>MagmaEvaluateVisual<CR>
+nnoremap <silent>       <leader>rc :MagmaReevaluateCell<CR>
+nnoremap <silent>       <leader>rd :MagmaDelete<CR>
+nnoremap <silent>       <leader>ro :MagmaShowOutput<CR>
+
+let g:magma_automatically_open_output = v:false
+
+" use silver searcher instead of grep
 if executable('ag')
   " Use ag over grep
   set grepprg=rg\ --color=never
