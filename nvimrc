@@ -84,6 +84,8 @@ Plug 'EdenEast/nightfox.nvim'
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
+Plug 'jakewvincent/texmagic.nvim'
+
 call plug#end()
 
 " Markdown Preview
@@ -376,3 +378,47 @@ if executable('rg')
 else
   let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 endif
+
+"TexMagic
+
+let g:tex_flavor = 'latex'
+nnoremap <Leader>tb :TexlabBuild<CR>
+nnoremap <Leader>tp :TexlabForward<CR>
+
+autocmd BufWritePost * TexlabBuild
+
+lua <<EOF
+-- Run setup and specify two custom build engines
+require('texmagic').setup{
+    engines = {
+        pdflatex = {    -- This has the same name as a default engine but would
+                        -- be preferred over the same-name default if defined
+            executable = "latexmk",
+            args = {
+                "-pdflatex",
+                "-interaction=nonstopmode",
+                "-synctex=1",
+                "-outdir=.build",
+                "-pv",
+                "%f"
+            },
+            isContinuous = false
+        },
+    }
+}
+
+require('lspconfig').texlab.setup{
+    cmd = {"texlab"},
+    filetypes = {"tex", "bib"},
+    settings = {
+        texlab = {
+            rootDirectory = nil,
+            build = _G.TeXMagicBuildConfig,
+            forwardSearch = {
+                executable = "evince",
+                args = {"%p"}
+            }
+        }
+    }
+}
+EOF
