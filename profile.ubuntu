@@ -62,4 +62,5 @@ alias alf="ls -alFh"
 
 export LD_LIBRARY_PATH=/usr/local/cuda-11.1/lib64/:$LD_LIBRARY_PATH
 export PATH=$HOME/libs/ccls/Release:$PATH
+export PATH=$HOME/.local/bin/zotero/:$PATH
 

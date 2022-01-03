@@ -44,6 +44,9 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-buffer'
 " Install plugin for lsp
 Plug 'hrsh7th/cmp-nvim-lsp'
+" plugin for filepaths
+Plug 'hrsh7th/cmp-path'
+
 
 " temp keep ctrlp, telescope broken on nightly vim build
 Plug 'ctrlpvim/ctrlp.vim'
@@ -133,6 +136,7 @@ cmp.setup({
   sources = {
     { name = 'nvim_lsp' },
     { name = 'path' },
+    { name = 'vsnip' },
   }
 })
 
@@ -315,8 +319,18 @@ set background=dark
 let g:airline_theme='kalisi'
 set t_Co=256
 
-" Accordion use 2 panes
-autocmd VimEnter * AccordionAll 2
+" Accordion use 4 panes
+autocmd VimEnter * AccordionAll 4
+augroup ReduceNoise
+    autocmd!
+    " Automatically resize active split to 85 width
+    autocmd WinEnter * :call ResizeSplits()
+augroup END
+
+function! ResizeSplits()
+    set winwidth=120
+    wincmd =
+endfunction
 
 " YouCompleteMe options
 " ctrl+] when the cursor is positioned in a symbol to quickly jump to a definition
