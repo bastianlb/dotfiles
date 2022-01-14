@@ -385,7 +385,7 @@ let g:tex_flavor = 'latex'
 nnoremap <Leader>tb :TexlabBuild<CR>
 nnoremap <Leader>tp :TexlabForward<CR>
 
-autocmd BufWritePost * TexlabBuild
+autocmd BufWritePost,FileWritePost *.tex :TexlabBuild
 
 lua <<EOF
 -- Run setup and specify two custom build engines
