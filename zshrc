@@ -71,5 +71,9 @@ ZSH_THEME="gallois"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git pyenv)
 
+function zshaddhistory() {
+	echo "${1%%$'\n'}⋮${PWD}   " >> ~/.zsh_history_ext
+}
+
 source $ZSH/oh-my-zsh.sh
 source ~/.profile
