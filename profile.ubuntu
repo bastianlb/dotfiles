@@ -65,3 +65,7 @@ export PATH=$HOME/libs/ccls/Release:$PATH
 export PATH=$HOME/.local/bin/zotero/:$PATH
 export PATH=$HOME/.local/bin:$PATH
 
+# alacritty settings mess with gtk
+unset GDK_PIXBUF_MODULEDIR
+unset GDK_PIXBUF_MODULE_FILE
+

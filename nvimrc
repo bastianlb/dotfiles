@@ -33,6 +33,7 @@ Plug 'preservim/nerdtree'
 
 " LSP-server integration
 Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 
@@ -84,6 +85,7 @@ Plug 'EdenEast/nightfox.nvim'
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
+" tex and spell-check
 Plug 'jakewvincent/texmagic.nvim'
 
 call plug#end()
@@ -92,7 +94,27 @@ call plug#end()
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 1
 
+" ------- LSP CONFIGURATION ---------
+
 lua << EOF
+local lsp_installer = require("nvim-lsp-installer")
+
+-- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
+-- or if the server is already installed).
+lsp_installer.on_server_ready(function(server)
+    local opts = {}
+
+    -- (optional) Customize the options passed to the server
+    -- if server.name == "tsserver" then
+    --     opts.root_dir = function() ... end
+    -- end
+
+    -- This setup() function will take the provided server configuration and decorate it with the necessary properties
+    -- before passing it onwards to lspconfig.
+    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    server:setup(opts)
+end)
+
 local lspconfig = require'lspconfig'
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -179,9 +201,7 @@ lspconfig.pylsp.setup {
   },
   capabilities = capabilities,
 };
-EOF
 
-lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {"cpp", "python"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ignore_install = { "javascript" }, -- List of parsers to ignore installing
@@ -190,9 +210,7 @@ require'nvim-treesitter.configs'.setup {
     disable = { "c", "rust" },  -- list of language that will be disabled
   },
 }
-EOF
 
-lua <<EOF
 require('telescope').setup{
   defaults = {
     previewer = true,
@@ -208,21 +226,43 @@ require('telescope').setup{
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
   }
 }
-EOF
-"nnoremap <c-p> :lua require'telescope.builtin'.find_files{}<CR>
-"nnoremap <silent> gr <cmd>lua require'telescope.builtin'.lsp_references{ shorten_path = true }<CR>
-" autocmd User TelescopePreviewerLoaded setlocal wrap
+-- Run setup and specify two custom build engines
+require('texmagic').setup{
+    engines = {
+        pdflatex = {    -- This has the same name as a default engine but would
+                        -- be preferred over the same-name default if defined
+            executable = "latexmk",
+            args = {
+                "-pdflatex",
+                "-interaction=nonstopmode",
+                "-synctex=1",
+                "-outdir=.build",
+                "-pv",
+                "%f"
+            },
+            isContinuous = false
+        },
+    }
+}
 
-" possibility to use ycm with ccls
-"let g:ycm_language_server =
-"  \ [{
-"  \   'name': 'ccls',
-"  \   'cmdline': [ 'ccls' ],
-"  \   'filetypes': [ 'c', 'cpp', 'cuda', 'objc', 'objcpp' ],
-"  \   'project_root_files': [ '.ccls-root', 'build/compile_commands.json' ]
-"  \ }]
-"
-"let g:ycm_global_ycm_extra_conf = '$HOME/.ycm_extra_conf.py'
+require('lspconfig').texlab.setup{
+    cmd = {"texlab"},
+    filetypes = {"tex", "bib"},
+    settings = {
+        texlab = {
+            rootDirectory = nil,
+            build = _G.TeXMagicBuildConfig,
+            forwardSearch = {
+                executable = "evince",
+                args = {"%p"}
+            }
+        }
+    }
+}
+EOF
+" nnoremap <c-p> :lua require'telescope.builtin'.find_files{}<CR>
+" nnoremap <silent> gr <cmd>lua require'telescope.builtin'.lsp_references{ shorten_path = true }<CR>
+" autocmd User TelescopePreviewerLoaded setlocal wrap
 
 let mapleader="\<SPACE>"
 
@@ -387,38 +427,3 @@ nnoremap <Leader>tp :TexlabForward<CR>
 
 autocmd BufWritePost,FileWritePost *.tex :TexlabBuild
 
-lua <<EOF
--- Run setup and specify two custom build engines
-require('texmagic').setup{
-    engines = {
-        pdflatex = {    -- This has the same name as a default engine but would
-                        -- be preferred over the same-name default if defined
-            executable = "latexmk",
-            args = {
-                "-pdflatex",
-                "-interaction=nonstopmode",
-                "-synctex=1",
-                "-outdir=.build",
-                "-pv",
-                "%f"
-            },
-            isContinuous = false
-        },
-    }
-}
-
-require('lspconfig').texlab.setup{
-    cmd = {"texlab"},
-    filetypes = {"tex", "bib"},
-    settings = {
-        texlab = {
-            rootDirectory = nil,
-            build = _G.TeXMagicBuildConfig,
-            forwardSearch = {
-                executable = "evince",
-                args = {"%p"}
-            }
-        }
-    }
-}
-EOF
