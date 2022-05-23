@@ -105,13 +105,45 @@ lsp_installer.on_server_ready(function(server)
     local opts = {}
 
     -- (optional) Customize the options passed to the server
-    -- if server.name == "tsserver" then
-    --     opts.root_dir = function() ... end
-    -- end
-
-    -- This setup() function will take the provided server configuration and decorate it with the necessary properties
-    -- before passing it onwards to lspconfig.
-    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    if server.name == "texlab" then
+         opts = {
+              cmd = {"texlab"},
+              filetypes = {"tex", "bib"},
+              settings = {
+                texlab = {
+                  auxDirectory = "build/",
+                  bibtexFormatter = "texlab",
+                  build = {
+                    args = { "-lualatex", "-interaction=nonstopmode", "-synctex=1", "%f", "-outdir=build" },
+                    executable = "latexmk",
+                    forwardSearchAfter = true,
+                    onSave = true
+                  },
+                  chktex = {
+                    onEdit = true,
+                    onOpenAndSave = false
+                  },
+                  diagnosticsDelay = 100,
+                  formatterLineLength = 80,
+                  forwardSearch = {
+                    executable = "zathura",
+                    args = {
+                      "-reuse-instance",
+                      "%p",
+                      "%l:1:%f",
+                    }
+                  },
+                  latexFormatter = "latexindent",
+                  latexindent = {
+                    modifyLineBreaks = false
+                  }
+                }
+              }
+         }
+     end
+     if (server.name == "grammarly") then
+        opts.filetypes = { "markdown", "rst", "html", "tex" }
+     end
     server:setup(opts)
 end)
 
@@ -226,39 +258,7 @@ require('telescope').setup{
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
   }
 }
--- Run setup and specify two custom build engines
-require('texmagic').setup{
-    engines = {
-        pdflatex = {    -- This has the same name as a default engine but would
-                        -- be preferred over the same-name default if defined
-            executable = "latexmk",
-            args = {
-                "-pdflatex",
-                "-interaction=nonstopmode",
-                "-synctex=1",
-                "-outdir=.build",
-                "-pv",
-                "%f"
-            },
-            isContinuous = false
-        },
-    }
-}
 
-require('lspconfig').texlab.setup{
-    cmd = {"texlab"},
-    filetypes = {"tex", "bib"},
-    settings = {
-        texlab = {
-            rootDirectory = nil,
-            build = _G.TeXMagicBuildConfig,
-            forwardSearch = {
-                executable = "evince",
-                args = {"%p"}
-            }
-        }
-    }
-}
 EOF
 " nnoremap <c-p> :lua require'telescope.builtin'.find_files{}<CR>
 " nnoremap <silent> gr <cmd>lua require'telescope.builtin'.lsp_references{ shorten_path = true }<CR>
