@@ -38,8 +38,6 @@ sudo apt install zsh
 chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-ln -s ~/.dot/zshrc ~/.zshrc
-
 git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 
 #zsh plugins
@@ -48,6 +46,11 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+
+rm ~/.zshrc
+ln -s ~/.dot/zshrc ~/.zshrc
+ln -s ~/.dot/zprofile ~/.zprofile
+ln -s ~/.dot/p10k.zsh ~/.p10k.zsh
 
 # install hack fonts
 # https://github.com/source-foundry/Hack
