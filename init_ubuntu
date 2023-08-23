@@ -12,16 +12,9 @@ mkdir -p ~/.ipython/profile_default
 ln -s ~/.dot/ipython_config.py ~/.ipython/profile_default/ipython_config.py
 
 #install nvim and make following chnages
-sudo add-apt-repository ppa:neovim-ppa/unstable
-sudo apt-get update
-sudo apt-get install neovim
-mkdir -p ~/.config/nvim
-ln -s ~/.dot/nvimrc ~/.config/nvim/init.vim
-
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-
-echo 'now run PlugInstall in neovim'
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+mv ./nvim.appimage ~/.local/bin/nvim
 
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
@@ -41,8 +34,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 
 # install node/npm
-curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
+
+sudo apt install fd-find
 
 # install copilot
 git clone https://github.com/github/copilot.vim.git \

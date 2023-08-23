@@ -57,12 +57,14 @@ fi
 export PYTHON_CONFIGURE_OPTS="--enable-shared"
 
 alias vi=nvim
+alias open=xdg-open
 alias ls="exa --icons"
 alias alf="ls -alFh"
 
-export LD_LIBRARY_PATH=/usr/local/cuda-11.1/lib64/:$LD_LIBRARY_PATH
 export PATH=$HOME/.local/bin/zotero/:$PATH
 export PATH=$HOME/.local/bin:$PATH
+export PATH=/usr/local/cuda/bin/:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64/:$LD_LIBRARY_PATH
 
 # alacritty settings mess with gtk
 unset GDK_PIXBUF_MODULEDIR
