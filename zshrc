@@ -82,6 +82,7 @@ plugins=(
 	zsh-autosuggestions
 	fzf
 	pyenv
+  vi-mode
 )
 
 function zshaddhistory() {
@@ -90,6 +91,7 @@ function zshaddhistory() {
 
 source $ZSH/oh-my-zsh.sh
 source ~/.profile
+source ~/.zprofile 
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -98,5 +100,9 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 FZF_BASE="$HOME/.fzf"
 
+# enable vim mode
+bindkey -v
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+

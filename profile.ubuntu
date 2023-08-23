@@ -10,19 +10,19 @@
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-    fi
-fi 
+	# include .bashrc if it exists
+	if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+	fi
+fi
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+if [ -d "$HOME/bin" ]; then
+	PATH="$HOME/bin:$PATH"
 fi
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+if [ -d "$HOME/.local/bin" ]; then
+	PATH="$HOME/.local/bin:$PATH"
 fi
 
 # set PATH
@@ -43,21 +43,20 @@ export VISUAL=vim
 #source /usr/local/bin/virtualenvwrapper.sh
 
 if [ -f ~/.bash_profile ]; then
-    source ~/.bash_profile
+	source ~/.bash_profile
 fi
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1 > /dev/null 2>&1; then 
+if command -v pyenv 1 >/dev/null 2>&1; then
 	eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+	eval "$(pyenv virtualenv-init -)"
 fi
 
 # YouCompleteMe support neovim
 export PYTHON_CONFIGURE_OPTS="--enable-shared"
 
-alias vi=lvim
-alias open=xdg-open
+alias vi=nvim
 alias ls="exa --icons"
 alias alf="ls -alFh"
 
@@ -69,3 +68,4 @@ export PATH=$HOME/.local/bin:$PATH
 unset GDK_PIXBUF_MODULEDIR
 unset GDK_PIXBUF_MODULE_FILE
 
+export PATH="$HOME/miniconda3/bin:$PATH"
