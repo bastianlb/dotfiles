@@ -3,3 +3,5 @@
 vim/*
 vim/plugged/*
 .nvimlog
+lazyvim/*
+.secrets

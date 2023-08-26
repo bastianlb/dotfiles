@@ -57,7 +57,6 @@ fi
 export PYTHON_CONFIGURE_OPTS="--enable-shared"
 
 alias vi=nvim
-alias open=xdg-open
 alias ls="exa --icons"
 alias alf="ls -alFh"
 

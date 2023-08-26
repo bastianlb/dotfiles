@@ -5,8 +5,9 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- add gruvbox
+  -- add colorscheme
   { "ellisonleao/gruvbox.nvim" },
+  { "rebelot/kanagawa.nvim" },
 
   -- Configure LazyVim to load gruvbox
   {
@@ -32,15 +33,15 @@ return {
   },
 
   -- override nvim-cmp and add cmp-emoji
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = { "hrsh7th/cmp-emoji" },
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      local cmp = require("cmp")
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "emoji" } }))
-    end,
-  },
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   dependencies = { "hrsh7th/cmp-emoji" },
+  --   ---@param opts cmp.ConfigSchema
+  --   opts = function(_, opts)
+  --     local cmp = require("cmp")
+  --     opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "emoji" } }))
+  --   end,
+  -- },
 
   -- change some telescope options and a keymap to browse plugin files
   {
@@ -61,6 +62,11 @@ return {
         layout_config = { prompt_position = "bottom" },
         sorting_strategy = "ascending",
         winblend = 0,
+        pickers = {
+          -- change the file picker to recurse into submodules
+          -- ideally we would want only our own owned repos
+          git_files = { recurse_submodules = false },
+        },
       },
     },
   },

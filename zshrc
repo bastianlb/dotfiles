@@ -80,7 +80,7 @@ plugins=(
 	git
 	zsh-syntax-highlighting
 	zsh-autosuggestions
-	fzf
+	fzf-zsh-plugin
 	pyenv
   vi-mode
 )
@@ -93,16 +93,33 @@ source $ZSH/oh-my-zsh.sh
 source ~/.profile
 source ~/.zprofile 
 
-export NVM_DIR="$HOME/.config/nvm"
+# Check for OS type
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # some custom macOS stuff..
+    export NVM_DIR="/opt/homebrew/opt/nvm"
+    export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+    alias slurm='ssh slurm -t "zsh --login"'
+else
+    # Linux and others
+    export NVM_DIR="$HOME/.config/nvm"
+fi
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 FZF_BASE="$HOME/.fzf"
+eval "$(fzf --zsh)"
 
 # enable vim mode
 bindkey -v
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="/Users/lennart/.nutsh/bin:$PATH"
 
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - --path)"
+
+if [ -f ~/.secrets ]; then
+    source ~//.secrets
+fi
