@@ -4,3 +4,4 @@ vim/*
 vim/plugged/*
 .nvimlog
 .secrets
+lazyvim/lazy-lock.json
