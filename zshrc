@@ -109,22 +109,20 @@ fi
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 FZF_BASE="$HOME/.fzf"
-eval "$(fzf --zsh)"
+# eval "$(fzf --zsh)"  # Disabled - using fzf-zsh-plugin instead
 
 # enable vim mode
 bindkey -v
+
+# Source fzf keybindings AFTER vi-mode is set up (otherwise vi-mode overrides them)
+[[ -f ~/.fzf/shell/key-bindings.zsh ]] && source ~/.fzf/shell/key-bindings.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/Users/lennart/.nutsh/bin:$PATH"
 
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init - --path)"
-
 if [ -f ~/.secrets ]; then
     source ~//.secrets
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+source ~/.bashrc
