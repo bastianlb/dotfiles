@@ -97,7 +97,6 @@ source ~/.zprofile
 # Check for OS type
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # some custom macOS stuff..
-    export NVM_DIR="/opt/homebrew/opt/nvm"
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
     alias slurm='ssh slurm -t "zsh --login"'
@@ -105,8 +104,6 @@ else
     # Linux and others
     export NVM_DIR="$HOME/.config/nvm"
 fi
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 FZF_BASE="$HOME/.fzf"
 # eval "$(fzf --zsh)"  # Disabled - using fzf-zsh-plugin instead
@@ -126,3 +123,20 @@ if [ -f ~/.secrets ]; then
 fi
 
 source ~/.bashrc
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+alias ls='eza --icons'
+alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
+compdef eza=ls
+
+# SSH to lrz, retrying until landing on a specific login node (default: login-02)
+ssh_lrz() {
+    local target="${1:-login-02}"
+    while true; do
+        echo "Attempting connection (want: $target)..."
+        ssh -t lrz "if [ \"\$(hostname)\" = \"$target\" ]; then exec \$SHELL -l; else echo \"Got \$(hostname), retrying...\"; exit 1; fi"
+        [ $? -eq 0 ] && break
+    done
+}
