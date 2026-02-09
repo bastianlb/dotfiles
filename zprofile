@@ -86,10 +86,4 @@ gpu_free_all() {
 
 # [ -f ~/.fzf.bash ] && source ~/.fzf.bash  # Disabled - using .fzf.zsh instead (bash syntax breaks in zsh)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
 export DSSSCRATCH='/dss/dssmcmlfs01/pn49ze/pn49ze-dss-0001/bastianl/'
-source ~/.conda_init

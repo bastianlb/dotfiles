@@ -9,7 +9,7 @@
 	ui = true
 
 [core]
-	excludesFile = /home/lennart/.gitignore
+	excludesFile = ~/.gitignore
 	editor = nvim
 
 [alias]
@@ -20,3 +20,5 @@
 [branch]
 	autosetupmerge = true
 	autosetuprebase = always
+[credential]
+	helper = store
