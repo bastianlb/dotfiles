@@ -89,3 +89,5 @@ fi
 if [ -f ~/.secrets ]; then
     source ~/.secrets
 fi
+
+[[ -f ~/.local_profile ]] && source ~/.local_profile
