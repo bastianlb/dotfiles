@@ -49,6 +49,8 @@ set -g status-right "#[fg=cyan]%d %b %R"
 # other settings
 set -sg escape-time 1
 
+set -g history-limit 5000
+
 set -g base-index 1
 setw -g pane-base-index 1
 

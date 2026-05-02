@@ -14,7 +14,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export NVM_DIR="/opt/homebrew/opt/nvm"
 else
-    export NVM_DIR="$HOME/.config/nvm"
+    export NVM_DIR="$HOME/.nvm"
 fi
 
 # Lazy-load nvm for faster startup
@@ -43,6 +43,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 # PATH
+# NVM node bin (eager) — lazy nvm plugin defers PATH, but claude CLI needs it immediately
+for d in "$NVM_DIR"/versions/node/*/bin(NOn[1]); do export PATH="$d:$PATH"; break; done
 [[ -d "$HOME/bin" ]] && export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.dot/bin:$PATH"
